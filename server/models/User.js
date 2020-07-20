@@ -51,7 +51,18 @@ userSchema.pre("save", function (next) {
       });
     });
   }
+  // 아이디, 이메일 등을 바꿀때
+  else {
+    next();
+  }
 });
+
+userSchema.methods.comparePassword = function (plainPassword, cb) {
+  // plainPassword를 암호화해서 암호화된 비밀번호랑 맞는지 확인
+  bcrypt.compare(plainPassword, this.password, function (err, isMatch) {
+    if (err) return cb(err), cb(null, isMatch);
+  });
+};
 
 const User = mongoose.model("User", userSchema);
 
