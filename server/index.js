@@ -4,6 +4,8 @@ const port = 5000;
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 
+const config = require("./config/key");
+
 const { User } = require("./models/User");
 
 // application/x-www-form-urlencoded 데이터들을 분석
@@ -12,16 +14,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 mongoose
-  .connect(
-    `mongodb+srv://wnsdnjs95:wnsdnjs12!@@cluster123.651dw.mongodb.net/<dbname>?retryWrites=true&w=majority
-`,
-    {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useCreateIndex: true,
-      useFindAndModify: false,
-    }
-  )
+  .connect(config.mongoURI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useFindAndModify: false,
+  })
   .then(() => console.log("MongoDB Connected..."))
   .catch((err) => console.log(err));
 
