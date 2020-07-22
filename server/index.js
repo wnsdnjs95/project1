@@ -59,7 +59,11 @@ app.post("/api/login", (req, res) => {
           message: "비밀번호가 틀렸습니다",
         });
       // 비밀번호가 맞다면 TOKEN을 생성한다
-      user.generateToken((err, user) => {});
+      user.generateToken((err, user) => {
+        if (err) return res.status(400).send(err);
+
+        // 토큰을 쿠키에 저장한다
+      });
     });
   });
 });
