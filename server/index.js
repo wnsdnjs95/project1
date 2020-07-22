@@ -7,6 +7,7 @@ const cookieParser = require("cookie-parser");
 
 const config = require("./config/key");
 
+const { auth } = require("./middleware/auth");
 const { User } = require("./models/User");
 
 // application/x-www-form-urlencoded 데이터들을 분석
@@ -29,7 +30,7 @@ mongoose
 app.get("/", (req, res) => res.send("Hello World!123"));
 
 // 회원 가입을 위한 route
-app.post("/api/register", (req, res) => {
+app.post("/api/users/register", (req, res) => {
   // 회원 가입 할 때 필요한 정보들을 client에서 가져오면
   // 그것들을 DB에 넣어준다
 
@@ -45,7 +46,7 @@ app.post("/api/register", (req, res) => {
   });
 });
 
-app.post("/api/login", (req, res) => {
+app.post("/api/users/login", (req, res) => {
   // 요청된 이메일을 DB에서 찾는다
   User.findOne({ email: req.body.email }, (err, user) => {
     if (!user) {
@@ -72,6 +73,19 @@ app.post("/api/login", (req, res) => {
           .json({ success: true, userId: user._id });
       });
     });
+  });
+});
+
+app.get("/api/auth", auth, (req, res) => {
+  res.status(200).json({
+    _id: req.user._id,
+    isAdmin: req.user.role === 0 ? false : true,
+    isAuth: true,
+    email: req.user.email,
+    name: req.user.name,
+    lastname: req.user.lastname,
+    role: req.user.role,
+    image: req.user.image,
   });
 });
 
