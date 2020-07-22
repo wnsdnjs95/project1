@@ -3,6 +3,7 @@ const app = express();
 const port = 5000;
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const cookieParser = require("cookie-parser");
 
 const config = require("./config/key");
 
@@ -12,6 +13,8 @@ const { User } = require("./models/User");
 app.use(bodyParser.urlencoded({ extended: true }));
 // application/json 데이터들을 분석
 app.use(bodyParser.json());
+
+app.use(cookieParser());
 
 mongoose
   .connect(config.mongoURI, {
@@ -63,6 +66,10 @@ app.post("/api/login", (req, res) => {
         if (err) return res.status(400).send(err);
 
         // 토큰을 쿠키에 저장한다
+        res
+          .cookie("x_auth", user.token)
+          .status(200)
+          .json({ success: true, userId: user._id });
       });
     });
   });

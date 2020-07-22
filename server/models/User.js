@@ -61,7 +61,8 @@ userSchema.pre("save", function (next) {
 userSchema.methods.comparePassword = function (plainPassword, cb) {
   // plainPassword를 암호화해서 암호화된 비밀번호랑 맞는지 확인
   bcrypt.compare(plainPassword, this.password, function (err, isMatch) {
-    if (err) return cb(err), cb(null, isMatch);
+    if (err) return cb(err);
+    cb(null, isMatch);
   });
 };
 
@@ -69,7 +70,7 @@ userSchema.methods.generateToken = function (cb) {
   var user = this;
 
   // jsonwebtoken을 이용해서 토큰을 생성하기
-  var token = jwt.sign(user._id, "secretToken");
+  var token = jwt.sign(user._id.toHexString(), "secretToken");
 
   user.token = token;
   user.save(function (err, user) {
