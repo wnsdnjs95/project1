@@ -1,6 +1,5 @@
 const express = require("express");
 const app = express();
-const port = 5000;
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
@@ -28,6 +27,9 @@ mongoose
   .catch((err) => console.log(err));
 
 app.get("/", (req, res) => res.send("Hello World!123"));
+app.get("/api/hello", (req, res) => {
+  res.send("Hello World");
+});
 
 // 회원 가입을 위한 route
 app.post("/api/users/register", (req, res) => {
@@ -101,5 +103,7 @@ app.get("/api/users/logout", auth, (req, res) => {
     }
   );
 });
+
+const port = 5000;
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
