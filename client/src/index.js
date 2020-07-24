@@ -9,13 +9,13 @@ import promiseMiddleware from "redux-promise";
 import ReduxThunk from "redux-thunk";
 import Reducer from "./_reducers";
 
+import "antd/dist/antd.css";
+import { applyMiddleware, createStore } from "redux";
+
 const createStoreWithMiddleware = applyMiddleware(
   promiseMiddleware,
   ReduxThunk
 )(createStore);
-
-import "antd/dist/antd.css";
-import { createStore } from "redux";
 
 ReactDOM.render(
   <Provider

@@ -26,11 +26,6 @@ mongoose
   .then(() => console.log("MongoDB Connected..."))
   .catch((err) => console.log(err));
 
-app.get("/", (req, res) => res.send("Hello World!123"));
-app.get("/api/hello", (req, res) => {
-  res.send("Hello World");
-});
-
 // 회원 가입을 위한 route
 app.post("/api/users/register", (req, res) => {
   // 회원 가입 할 때 필요한 정보들을 client에서 가져오면
@@ -72,7 +67,7 @@ app.post("/api/users/login", (req, res) => {
         res
           .cookie("x_auth", user.token)
           .status(200)
-          .json({ success: true, userId: user._id });
+          .json({ loginSuccess: true, userId: user._id });
       });
     });
   });
